@@ -43,6 +43,8 @@ func _process(delta):
 			$AudioFell.play()
 			$Bg.play("shadow")
 			set_state(GameState.GAMEOVER)
+			camera.offset = Vector2.ZERO
+			return
 			
 		shake()
 	elif state == GameState.GAMEOVER && playing:
