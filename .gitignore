@@ -48,3 +48,4 @@ Temporary Items
 
 /build
 /build/**/*.*
+.DS_Store
