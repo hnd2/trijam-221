@@ -58,3 +58,6 @@ func set_state(new_state):
 		$AnimatedSprite2D.play("down")
 	elif state == PlayerState.DEAD:
 		$AnimatedSprite2D.play("dead")
+
+func is_dead():
+	return state == PlayerState.DEAD

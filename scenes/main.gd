@@ -55,12 +55,12 @@ func set_state(new_state):
 	if new_state == GameState.TITLE:
 		reset()
 		$FloorRoot.visible = false
-		$CanvasLayer.show()
+		$CanvasLayer/Title.show()
 		playing = false
 	elif new_state == GameState.PLAYING:
 		reset()
 		$FloorRoot.visible = true
-		$CanvasLayer.hide()
+		$CanvasLayer/Title.hide()
 		playing = false
 	elif new_state == GameState.GAMEOVER:
 		$AudioElevator.stop()
@@ -85,18 +85,19 @@ func shake():
 
 func blink():
 	if !$Black.visible:
-		$BlinkTimer.start(randf_range(0.2, 0.4))
+		$BlinkTimer.start(randf_range(0.2, 2.0))
 	else:
-		$BlinkTimer.start(randf_range(4.0, 8.0))
+		$BlinkTimer.start(randf_range(0.3, 2.0))
 
 func _on_game_start_timer_timeout():
 	$AudioElevator.play()
 	playing = true
 
-
-
 func _on_game_over_timer_timeout():
 	playing = true
+	if !$Player.is_dead():
+		$CanvasLayer/Success.show()
+		$AudioSuccess.play()
 	blink()
 
 

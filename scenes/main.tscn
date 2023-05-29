@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://r53mn5gjjf8p"]
+[gd_scene load_steps=16 format=3 uid="uid://r53mn5gjjf8p"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_3cjme"]
 [ext_resource type="Texture2D" uid="uid://d3lbgk5wcp00a" path="res://sprites/bg.png" id="2_cnv4r"]
@@ -9,7 +9,9 @@
 [ext_resource type="AudioStream" uid="uid://d3phvtdwnju2v" path="res://se/elevator.ogg" id="6_ow1fc"]
 [ext_resource type="Texture2D" uid="uid://cuxqpdejomf1c" path="res://sprites/title.png" id="6_uujci"]
 [ext_resource type="AudioStream" uid="uid://jubts165rvxk" path="res://se/fell.ogg" id="7_leoct"]
+[ext_resource type="Texture2D" uid="uid://d1sdjgb48lggu" path="res://sprites/success.png" id="8_0mr6b"]
 [ext_resource type="AudioStream" uid="uid://cdsvwkxj2uhf2" path="res://se/floor.ogg" id="8_bbyf1"]
+[ext_resource type="AudioStream" uid="uid://b4evs8abdp16g" path="res://se/success.ogg" id="11_wa7qi"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ttoky"]
 animations = [{
@@ -97,6 +99,18 @@ size_flags_vertical = 4
 texture = ExtResource("6_uujci")
 expand_mode = 2
 
+[node name="Success" type="TextureRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("8_0mr6b")
+expand_mode = 2
+
 [node name="GameStartTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -114,6 +128,9 @@ stream = ExtResource("7_leoct")
 
 [node name="AudioFloor" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_bbyf1")
+
+[node name="AudioSuccess" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_wa7qi")
 
 [connection signal="timeout" from="GameStartTimer" to="." method="_on_game_start_timer_timeout"]
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
