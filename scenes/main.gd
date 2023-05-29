@@ -100,7 +100,7 @@ func _on_game_over_timer_timeout():
 	if !$Player.is_dead():
 		$CanvasLayer/Success.show()
 		$AudioSuccess.play()
-	blink()
+	# blink()
 
 
 func _on_floor_root_area_entered(area):
