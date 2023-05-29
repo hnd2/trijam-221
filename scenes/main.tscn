@@ -1,10 +1,34 @@
-[gd_scene load_steps=8 format=3 uid="uid://r53mn5gjjf8p"]
+[gd_scene load_steps=14 format=3 uid="uid://r53mn5gjjf8p"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_3cjme"]
 [ext_resource type="Texture2D" uid="uid://d3lbgk5wcp00a" path="res://sprites/bg.png" id="2_cnv4r"]
 [ext_resource type="PackedScene" uid="uid://cd14v6wvldwtm" path="res://scenes/player.tscn" id="3_o342g"]
+[ext_resource type="Texture2D" uid="uid://bfkibvo6rgeaf" path="res://sprites/bg_black.png" id="4_bh2fr"]
+[ext_resource type="Texture2D" uid="uid://jytvigxgyse0" path="res://sprites/bg_shadow.png" id="4_n5mlp"]
 [ext_resource type="PackedScene" uid="uid://eg8k8xnnu58n" path="res://scenes/floor.tscn" id="4_p23lj"]
-[ext_resource type="FontFile" uid="uid://dku0dvip1etqd" path="res://fonts/k8x12.ttf" id="5_2k7k8"]
+[ext_resource type="AudioStream" uid="uid://d3phvtdwnju2v" path="res://se/elevator.ogg" id="6_ow1fc"]
+[ext_resource type="Texture2D" uid="uid://cuxqpdejomf1c" path="res://sprites/title.png" id="6_uujci"]
+[ext_resource type="AudioStream" uid="uid://jubts165rvxk" path="res://se/fell.ogg" id="7_leoct"]
+[ext_resource type="AudioStream" uid="uid://cdsvwkxj2uhf2" path="res://se/floor.ogg" id="8_bbyf1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ttoky"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_cnv4r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_n5mlp")
+}],
+"loop": true,
+"name": &"shadow",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjld"]
 size = Vector2(60, 2)
@@ -18,9 +42,9 @@ script = ExtResource("1_3cjme")
 camera = NodePath("Elevator/Camera2D")
 floor = ExtResource("4_p23lj")
 
-[node name="Bg" type="Sprite2D" parent="."]
+[node name="Bg" type="AnimatedSprite2D" parent="."]
 position = Vector2(64, 36)
-texture = ExtResource("2_cnv4r")
+sprite_frames = SubResource("SpriteFrames_ttoky")
 
 [node name="Player" parent="." instance=ExtResource("3_o342g")]
 position = Vector2(64, 42)
@@ -54,27 +78,43 @@ points = PackedVector2Array(-99.9999, -150, -100, 150, 100, 150, 100, -150, -100
 
 [node name="FloorRoot" type="Node2D" parent="."]
 
+[node name="Black" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(80.4375, 36)
+scale = Vector2(0.741211, 1)
+texture = ExtResource("4_bh2fr")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Title" type="TextureRect" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 439.0
-offset_top = 286.0
-offset_right = -457.0
-offset_bottom = -239.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_fonts/font = ExtResource("5_2k7k8")
-theme_override_font_sizes/font_size = 328
-text = "ELEVATOR"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 4
+texture = ExtResource("6_uujci")
+expand_mode = 2
 
 [node name="GameStartTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="GameOverTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="BlinkTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AudioElevator" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_ow1fc")
+
+[node name="AudioFell" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_leoct")
+
+[node name="AudioFloor" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_bbyf1")
+
 [connection signal="timeout" from="GameStartTimer" to="." method="_on_game_start_timer_timeout"]
+[connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]
+[connection signal="timeout" from="BlinkTimer" to="." method="_on_blink_timer_timeout"]

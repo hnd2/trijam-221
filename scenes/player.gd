@@ -33,6 +33,7 @@ func _physics_process(delta):
 		elif state == PlayerState.DOWN && Input.is_action_just_released("jump"):
 			set_state(PlayerState.STAND)
 			velocity.y = jump_speed
+			$AudioJump.play()
 		else:
 			velocity.y = 0
 	else:
