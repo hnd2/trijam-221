@@ -11,6 +11,7 @@ enum PlayerState {
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var state = PlayerState.STAND
+var jump_time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,6 +34,7 @@ func _physics_process(delta):
 		elif state == PlayerState.DOWN && Input.is_action_just_released("jump"):
 			set_state(PlayerState.STAND)
 			velocity.y = jump_speed
+			jump_time = Time.get_unix_time_from_system()
 			$AudioJump.play()
 		else:
 			velocity.y = 0
@@ -42,7 +44,13 @@ func _physics_process(delta):
 	move_and_slide()
 
 func apply_force(force):
-	if is_on_floor():
+	var current_time = Time.get_unix_time_from_system()
+	var delta = current_time - jump_time
+	print("current_time: ", current_time)
+	print("jump_time: ", jump_time)
+	print("current_time - jump_time: ", delta)
+	
+	if delta > 0.1:
 		velocity = force
 		set_state(PlayerState.DEAD)
 		var normal = get_floor_normal()
