@@ -53,8 +53,8 @@ func apply_force(force):
 	if delta > 0.1:
 		velocity = force
 		set_state(PlayerState.DEAD)
-		var normal = get_floor_normal()
-		rotation = normal.angle()
+		#var normal = get_floor_normal()
+		rotation = -PI / 2
 		move_and_slide()
 
 func set_state(new_state):
