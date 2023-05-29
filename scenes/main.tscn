@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://r53mn5gjjf8p"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_3cjme"]
+[ext_resource type="Texture2D" uid="uid://d3lbgk5wcp00a" path="res://sprites/bg.png" id="2_cnv4r"]
+[ext_resource type="PackedScene" uid="uid://cd14v6wvldwtm" path="res://scenes/player.tscn" id="3_o342g"]
+[ext_resource type="PackedScene" uid="uid://eg8k8xnnu58n" path="res://scenes/floor.tscn" id="4_p23lj"]
+[ext_resource type="FontFile" uid="uid://dku0dvip1etqd" path="res://fonts/k8x12.ttf" id="5_2k7k8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjld"]
+size = Vector2(60, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tnxrl"]
+size = Vector2(2, 72)
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("camera")]
+scale = Vector2(8, 8)
+script = ExtResource("1_3cjme")
+camera = NodePath("Elevator/Camera2D")
+floor = ExtResource("4_p23lj")
+
+[node name="Bg" type="Sprite2D" parent="."]
+position = Vector2(64, 36)
+texture = ExtResource("2_cnv4r")
+
+[node name="Player" parent="." instance=ExtResource("3_o342g")]
+position = Vector2(64, 42)
+speed = 120.0
+jump_speed = -150.0
+
+[node name="Elevator" type="StaticBody2D" parent="."]
+position = Vector2(64, 36)
+
+[node name="bottom" type="CollisionShape2D" parent="Elevator"]
+position = Vector2(0, 34)
+shape = SubResource("RectangleShape2D_8hjld")
+
+[node name="top" type="CollisionShape2D" parent="Elevator"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_8hjld")
+
+[node name="left" type="CollisionShape2D" parent="Elevator"]
+position = Vector2(-29, 0)
+shape = SubResource("RectangleShape2D_tnxrl")
+
+[node name="right" type="CollisionShape2D" parent="Elevator"]
+position = Vector2(29, 0)
+shape = SubResource("RectangleShape2D_tnxrl")
+
+[node name="Line2D" type="Line2D" parent="Elevator"]
+visible = false
+points = PackedVector2Array(-99.9999, -150, -100, 150, 100, 150, 100, -150, -100, -150)
+
+[node name="Camera2D" type="Camera2D" parent="Elevator"]
+
+[node name="FloorRoot" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 439.0
+offset_top = 286.0
+offset_right = -457.0
+offset_bottom = -239.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_2k7k8")
+theme_override_font_sizes/font_size = 328
+text = "ELEVATOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameStartTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="GameStartTimer" to="." method="_on_game_start_timer_timeout"]
